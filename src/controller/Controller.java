@@ -117,7 +117,7 @@ public class Controller extends HttpServlet {
 //            links.put("transaction-history.do", "Transaction History");
 //            links.put("research-fund.do", "Research Fund");
 //        } else {
-            links.put("plan-trip.do", "PlanTrip"); //HERE!!!!! EDIT!!!!!
+            links.put("deIdentification.do", "De-Identify Data"); //HERE!!!!! EDIT!!!!!
 //        }
         request.setAttribute("links", links);
     }
