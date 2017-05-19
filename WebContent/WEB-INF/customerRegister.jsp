@@ -28,7 +28,7 @@
     <div class="page-wrapper">
         <header role="header">
             <div class="topbar">
-              <h5><a href="auditorLogin.jsp"><i class="fa-caret-left hidden-sm-up"></i><u>Auditor Log in</u></a></h5>
+              <h5><a href="auditorLogin.do"><i class="fa-caret-left hidden-sm-up"></i><u>Auditor Log in</u></a></h5>
             </div>
 
 <script src="/Areas/Account/Assets/scripts/CommonScripts?v=3Z_MTicl0k6OwWqXo0cL0Odz8AeLjSROE_DfVWo38uU1"></script>

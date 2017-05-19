@@ -16,6 +16,7 @@ import org.genericdao.RollbackException;
 import databean.AuditorBean;
 import model.AllDataDAO;
 import model.AuditorDAO;
+import model.CustomerAcctDAO;
 import model.DiseaseDAO;
 import model.GroceryStoreDAO;
 import model.InsuranceCompanyDAO;
@@ -48,6 +49,7 @@ public class Controller extends HttpServlet {
     InsuranceCompanyDAO insuranceCompanyDAO = model.getInsuranceCompanyDAO();
     InsuranceHealthDAO insuranceHealthDAO = model.getInsuranceHealthDAO();
     AuditorDAO auditorDAO = model.getAuditorDAO();
+    CustomerAcctDAO customerAcctDAO = model.getCustomerAcctDAO();
     
     
     
@@ -71,6 +73,7 @@ public class Controller extends HttpServlet {
 
         Action.add(new CustomerRegisterAction(model));
         Action.add(new AuditorLoginAction(model));
+        Action.add(new AuditorDeIdentifyDataAction(model));
 //    	Action.add(new LandingAction());
 //    	Action.add(new GetDirectionAction());
 //    	Action.add(new RouteDetailsAction());
