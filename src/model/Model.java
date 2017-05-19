@@ -12,6 +12,8 @@ public class Model {
 	private GroceryStoreDAO groceryStoreDAO;
 	private InsuranceCompanyDAO insuranceCompanyDAO;
 	private InsuranceHealthDAO insuranceHealthDAO;
+	private AuditorDAO auditorDAO;
+	private CustomerAcctDAO customerAcctDAO;
 
 	
     private boolean requireSSL;
@@ -24,11 +26,11 @@ public class Model {
             
             ConnectionPool pool = new ConnectionPool(jdbcDriver, jdbcURL);
             allDataDAO  = new AllDataDAO("allData", pool);
-            diseaseDAO = new DiseaseDAO("disease_id", pool);
-            groceryStoreDAO = new GroceryStoreDAO("grocery_store", pool);
-            insuranceCompanyDAO = new InsuranceCompanyDAO("insurance_company", pool);
-            insuranceHealthDAO = new InsuranceHealthDAO("insurance_health", pool);
-            
+//            diseaseDAO = new DiseaseDAO("disease_id", pool);
+//            groceryStoreDAO = new GroceryStoreDAO("grocery_store", pool);
+//            insuranceCompanyDAO = new InsuranceCompanyDAO("insurance_company", pool);
+//            insuranceHealthDAO = new InsuranceHealthDAO("insurance_health", pool);
+            auditorDAO = new AuditorDAO("auditor", pool);
 
            
         } catch (DAOException e) {
@@ -39,6 +41,14 @@ public class Model {
 
 
 
+
+	public CustomerAcctDAO getCustomerAcctDAO() {
+		return customerAcctDAO;
+	}
+
+	public void setCustomerAcctDAO(CustomerAcctDAO customerAcctDAO) {
+		this.customerAcctDAO = customerAcctDAO;
+	}
 
 	public AllDataDAO getAllDataDAO() {
 		return allDataDAO;
@@ -79,6 +89,23 @@ public class Model {
 	public void setInsuranceHealthDAO(InsuranceHealthDAO insuranceHealthDAO) {
 		this.insuranceHealthDAO = insuranceHealthDAO;
 	}
+
+	
+	public AuditorDAO getAuditorDAO() {
+		return auditorDAO;
+	}
+
+
+
+
+
+	public void setAuditorDAO(AuditorDAO auditorDAO) {
+		this.auditorDAO = auditorDAO;
+	}
+
+
+
+
 
 	public void setRequireSSL(boolean requireSSL) {
 		this.requireSSL = requireSSL;

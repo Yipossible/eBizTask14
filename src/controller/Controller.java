@@ -11,19 +11,71 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.genericdao.RollbackException;
+
+import databean.AuditorBean;
+import model.AllDataDAO;
+import model.AuditorDAO;
+import model.DiseaseDAO;
+import model.GroceryStoreDAO;
+import model.InsuranceCompanyDAO;
+import model.InsuranceHealthDAO;
+import model.Model;
+
 
 
 public class Controller extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    Model model;
+    
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Controller() {
+        super();
+    }
+    
     @Override
     public void init() throws ServletException {
-        //Action.add(new DisplayRoutesAction());
-//    	Action.add(new PlanTripAction());
+    
+    model = new Model(getServletConfig());
+    	
+    AllDataDAO allDataDAO = model.getAllDataDAO();
+    DiseaseDAO diseaseDAO = model.getDiseaseDAO();
+    GroceryStoreDAO groceryStoreDAO = model.getGroceryStoreDAO();
+    InsuranceCompanyDAO insuranceCompanyDAO = model.getInsuranceCompanyDAO();
+    InsuranceHealthDAO insuranceHealthDAO = model.getInsuranceHealthDAO();
+    AuditorDAO auditorDAO = model.getAuditorDAO();
+    
+    
+    
+    
+    try { 
+        if ( model.getAuditorDAO().getAuditor().length == 0){    
+        	AuditorBean auditorBean = new AuditorBean();
+        	
+        	auditorBean.setAuditor_username("HealthyChoice");
+        	auditorBean.encodePassword("safe");
+            auditorDAO.create(auditorBean);
+        }
+    } catch (RollbackException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    
+    
+    
+    
+
+        Action.add(new CustomerRegisterAction(model));
+        Action.add(new AuditorLoginAction(model));
 //    	Action.add(new LandingAction());
 //    	Action.add(new GetDirectionAction());
 //    	Action.add(new RouteDetailsAction());
+    	
+    	
     }
 
     @Override
@@ -104,21 +156,17 @@ public class Controller extends HttpServlet {
 
     private void prepareLinks(HttpServletRequest request) {
         Map<String, String> links = new LinkedHashMap<String, String>();
-//        if (request.getAttribute("employee") != null) {
-//            links.put("customer-list.do", "Manage Customers");
-//            links.put("(dropdown)", "Create Account");
-//            links.put("create-fund.do", "Create Fund");
-//            links.put("transition-day.do", "Transition Day");
-//        } else if (request.getAttribute("customer") != null) {
-//            links.put("account.do", "Account");
-//            links.put("buy-fund.do", "Buy");
-//            links.put("sell-fund.do", "Sell");
-//            links.put("request-check.do", "Request Check");
-//            links.put("transaction-history.do", "Transaction History");
-//            links.put("research-fund.do", "Research Fund");
-//        } else {
-            links.put("deIdentification.do", "De-Identify Data"); //HERE!!!!! EDIT!!!!!
-//        }
+        if (request.getAttribute("auditor") != null) {
+            //links.put("auditorLogin.do", "Auditor Login");
+            links.put("auditordeIdentification.do", "Generate Data");
+
+        } else if (request.getAttribute("customer") != null) {
+            links.put("customerRegister.do", "Customer Register");}
+        else {
+        	links.put("customerRegister.do", "Customer Register");
+        	links.put("auditorLogin.do", "Auditor Login");
+        }
+
         request.setAttribute("links", links);
     }
 }

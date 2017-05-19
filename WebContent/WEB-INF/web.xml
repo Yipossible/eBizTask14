@@ -23,6 +23,6 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>  ldeIdentification.do.do   </welcome-file>
+        <welcome-file>  customerRegister.do   </welcome-file>
     </welcome-file-list>
 </web-app>
