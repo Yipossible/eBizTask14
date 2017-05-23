@@ -66,7 +66,7 @@ public class CustomerRegisterAction extends Action{
         }
 		
 		
-		return "customerRegister.jsp";
+		return "customerEnroll.jsp";
 	}
 	
 }

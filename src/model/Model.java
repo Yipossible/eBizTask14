@@ -26,10 +26,22 @@ public class Model {
             
             ConnectionPool pool = new ConnectionPool(jdbcDriver, jdbcURL);
             allDataDAO  = new AllDataDAO("allData", pool);
-//            diseaseDAO = new DiseaseDAO("disease_id", pool);
-//            groceryStoreDAO = new GroceryStoreDAO("grocery_store", pool);
-//            insuranceCompanyDAO = new InsuranceCompanyDAO("insurance_company", pool);
-//            insuranceHealthDAO = new InsuranceHealthDAO("insurance_health", pool);
+            try {
+				if(allDataDAO.getCount() == 0) {
+					System.out.println("No data in SQL");
+					allDataDAO.createDefaultData();
+					System.out.println("All Data created");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new ServletException();
+			}
+            
+            
+            diseaseDAO = new DiseaseDAO("disease_id", pool);
+            groceryStoreDAO = new GroceryStoreDAO("grocery_store", pool);
+            insuranceCompanyDAO = new InsuranceCompanyDAO("insurance_company", pool);
+            insuranceHealthDAO = new InsuranceHealthDAO("insurance_health", pool);
             auditorDAO = new AuditorDAO("auditor", pool);
 
            

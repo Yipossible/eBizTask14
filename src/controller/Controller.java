@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.genericdao.RollbackException;
 
 import databean.AuditorBean;
+import databean.CustomerMonitorAction;
 import model.AllDataDAO;
 import model.AuditorDAO;
 import model.CustomerAcctDAO;
@@ -74,7 +75,9 @@ public class Controller extends HttpServlet {
         Action.add(new CustomerRegisterAction(model));
         Action.add(new AuditorLoginAction(model));
         Action.add(new AuditorDeIdentifyDataAction(model));
-//    	Action.add(new LandingAction());
+        Action.add(new AuditorReviewAction(model));
+        Action.add(new CustomerEnrollAction());
+        Action.add(new CustomerMonitorAction()); 
 //    	Action.add(new GetDirectionAction());
 //    	Action.add(new RouteDetailsAction());
     	

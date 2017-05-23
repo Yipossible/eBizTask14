@@ -41,11 +41,13 @@
     </div>
     <div class="row">
         <div class="col-lg-9 col-lg-offset-1 col-xl-8 col-xl-offset-2">
-<form action="/accountcreation" autocomplete="off" class="form-createAccount form-inlined" method="post"><input name="__RequestVerificationToken" type="hidden" value="1t8oTXSqaK-pvM4zQ9ZVgfxJ2--PmIs1GS6ftXSnnSJk-tuYykTeKSV_BKYBvno-to3c_oq4V5kAGlsc7sMyMFnaylxVKJO3wA_NJdYNq3Y1" /><input id="PhoneType" name="PhoneType" type="hidden" value="ishomenumber" />                <h2 class="heading1 text-xs-center m-y-3">
+        
+        <p style="font-size:large; color:green"> ${message}</p>
+<p style="font-size:large; color:red"> ${errors}</p>
+<form action="customerRegister.do" autocomplete="off" class="form-createAccount form-inlined" method="post"><input name="__RequestVerificationToken" type="hidden" value="1t8oTXSqaK-pvM4zQ9ZVgfxJ2--PmIs1GS6ftXSnnSJk-tuYykTeKSV_BKYBvno-to3c_oq4V5kAGlsc7sMyMFnaylxVKJO3wA_NJdYNq3Y1" /><input id="PhoneType" name="PhoneType" type="hidden" value="ishomenumber" />                <h2 class="heading1 text-xs-center m-y-3">
                     Have an account?
                     <a href="#" onclick="location.href='login.html'" style="font-size:22px;" class="btn-link">Sign In <i class="fa fa-caret-right"></i></a>
-<p style="font-size:large; color:green"> ${message}</p>
-<p style="font-size:large; color:red"> ${errors}</p>
+
                 
                 </h2>
                 <h2 class="heading1 m-y-2">Your Personal Info</h2>
@@ -218,24 +220,7 @@
 <option value="1920">1920</option>
 <option value="1919">1919</option>
 <option value="1918">1918</option>
-<option value="1917">1917</option>
-<option value="1916">1916</option>
-<option value="1915">1915</option>
-<option value="1914">1914</option>
-<option value="1913">1913</option>
-<option value="1912">1912</option>
-<option value="1911">1911</option>
-<option value="1910">1910</option>
-<option value="1909">1909</option>
-<option value="1908">1908</option>
-<option value="1907">1907</option>
-<option value="1906">1906</option>
-<option value="1905">1905</option>
-<option value="1904">1904</option>
-<option value="1903">1903</option>
-<option value="1902">1902</option>
-<option value="1901">1901</option>
-<option value="1900">1900</option>
+
 </select>
                             </div>
                             <span class="field-validation-valid errorMessage" data-valmsg-for="Birth_Year" data-valmsg-replace="true"></span>
@@ -381,7 +366,9 @@
                     <div class="form-group controls">
                         <div class="col-sm-9 col-sm-offset-3 p-x-0">
                             <div class="col-xl-6 col-sm-12 next">
-                                <a href="#" id="btnCreateAccount" class="btn btn-primary btn-full" onclick="disableButton('loadingsection', 'btnCreateAccount', $(this).closest('form')); $(this).closest('form').submit(); return false;">Create Account</a>
+                            
+                                <button type="submit" class="sumbit-button" id="btnCreateAccount" class="btn btn-primary btn-full" ><a href="customerEnroll.do">Create Account</a></button>
+                            
                             </div>
                             <div class="col-xl-6 col-sm-12 p-l-0 prev">
                                 <p class="text-mute text-xs-center text-xl-left"><small>By&nbsp;creating an account&nbsp;you agree to Giant Eagle&rsquo;s <a title="Privacy Policy" href="privacy-policy.html" target="_blank"> Privacy Policy.</a></small></p>

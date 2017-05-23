@@ -15,7 +15,7 @@
 <p style="font-size:large; color:green"> ${message}</p>
 <p style="font-size:large; color:red"> ${errors}</p>
 
-<form action="auditordeIdentification.do" method="POST">
+<form action="auditorSelectdeIdentification.do" method="POST">
 
 <label >insurance_member_id:</label>
 <select name="insurance_member_id"><option value=""></option>
