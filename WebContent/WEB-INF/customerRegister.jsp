@@ -1,9 +1,4 @@
-
 <!DOCTYPE html>
-<!--[if IE 8 ]> <html lang="en" class="ie8 lt-ie9 ie"> <![endif]-->
-<!--[if IE 9 ]> <html lang="en" class="ie9 ie"> <![endif]-->
-<!--[if IE 10 ]> <html lang="en" class="ie10 ie"> <![endif]-->
-
 <html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
@@ -14,42 +9,30 @@
     <script type="text/javascript" src="website/js/js1.js" data-dtconfig="rid=RID_-1737835921|rpid=1940273076|domain=gianteagle.com|lab=1|reportUrl=dynaTraceMonitor|agentUri=/dtagent_ICAijqx_6000500141012.js"></script><link rel="icon" type="image/x-icon" href="img/favicon.ico" />
     
     <link href="website/css/style.css" rel="stylesheet" />
+    <link href="website/css/other.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <script type="text/javascript" src="website/js/js2.js"></script>
     <script src="website/js/js3.js"></script>   
     <script type="text/javascript" src='https://www.google.com/recaptcha/api.js' async defer></script>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<body class="page-standard page-guest"> 
-    <!--[if lt IE 10]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://www.microsoft.com/en-us/download/internet-explorer.aspx">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->             
+</head>
+<body class="page-standard page-guest">        
     <div class="page-wrapper">
-        <header role="header">
-            <div class="topbar">
-              <h5><a href="auditorLogin.do"><i class="fa-caret-left hidden-sm-up"></i><u>Auditor Log in</u></a></h5>
-            </div>
-
-<script src="/Areas/Account/Assets/scripts/CommonScripts?v=3Z_MTicl0k6OwWqXo0cL0Odz8AeLjSROE_DfVWo38uU1"></script>
-
-        </header>
         <div class="content-wrapper">
             <section class="content-main bordered" role="main">
-    <div class="intro">
-        <h1>Create An Account</h1>
-    </div>
+		    <div class="intro">
+		        <h1>Create Your Account</h1>
+		    </div>
     <div class="row">
         <div class="col-lg-9 col-lg-offset-1 col-xl-8 col-xl-offset-2">
-        
-        <p style="font-size:large; color:green"> ${message}</p>
-<p style="font-size:large; color:red"> ${errors}</p>
-<form action="customerRegister.do" autocomplete="off" class="form-createAccount form-inlined" method="post"><input name="__RequestVerificationToken" type="hidden" value="1t8oTXSqaK-pvM4zQ9ZVgfxJ2--PmIs1GS6ftXSnnSJk-tuYykTeKSV_BKYBvno-to3c_oq4V5kAGlsc7sMyMFnaylxVKJO3wA_NJdYNq3Y1" /><input id="PhoneType" name="PhoneType" type="hidden" value="ishomenumber" />                <h2 class="heading1 text-xs-center m-y-3">
-                    Have an account?
-                    <a href="#" onclick="location.href='login.html'" style="font-size:22px;" class="btn-link">Sign In <i class="fa fa-caret-right"></i></a>
-
-                
-                </h2>
+        <c:forEach var="message" items="${message}">
+			<p style="font-size:large; color:green"> ${message}</p>
+		</c:forEach>
+        <c:forEach var="error" items="${errors}">
+			<p style="font-size:large; color:red"> ${errors}</p>
+		</c:forEach>
+		<form action="customerEnroll.do" autocomplete="off" class="form-createAccount form-inlined" method="post"><input name="__RequestVerificationToken" type="hidden" value="1t8oTXSqaK-pvM4zQ9ZVgfxJ2--PmIs1GS6ftXSnnSJk-tuYykTeKSV_BKYBvno-to3c_oq4V5kAGlsc7sMyMFnaylxVKJO3wA_NJdYNq3Y1" /><input id="PhoneType" name="PhoneType" type="hidden" value="ishomenumber" />
                 <h2 class="heading1 m-y-2">Your Personal Info</h2>
                 <div class="form-group row">
                     <p class="form-control-label">Name:</p>
@@ -367,16 +350,18 @@
                         <div class="col-sm-9 col-sm-offset-3 p-x-0">
                             <div class="col-xl-6 col-sm-12 next">
                             
-                                <button type="submit" class="sumbit-button" id="btnCreateAccount" class="btn btn-primary btn-full" ><a href="customerEnroll.do">Create Account</a></button>
+                                <!--<button type="submit" class="sumbit-button" id="btnCreateAccount" class="btn btn-primary btn-full" ><a href="customerEnroll.do">Create Account</a></button> -->
+                                <input type="submit" name="submit" value="Create Account" class="btn btn-primary btn-full" />
                             
                             </div>
                             <div class="col-xl-6 col-sm-12 p-l-0 prev">
-                                <p class="text-mute text-xs-center text-xl-left"><small>By&nbsp;creating an account&nbsp;you agree to Giant Eagle&rsquo;s <a title="Privacy Policy" href="privacy-policy.html" target="_blank"> Privacy Policy.</a></small></p>
+                                <p class="text-mute text-xs-center text-xl-left"><small>By&nbsp;creating an account&nbsp;you agree to Giant Eagle&rsquo;s <a title="Privacy Policy" href="http://www.gianteagle.com/About/Giant-Eagle-Inc-Notice-of-Pharmacy-Privacy-Practices/" target="_blank"> Privacy Policy</a>.</small></p>
                             </div>
                         </div>
                     </div>
                 </div>
-</form>        </div>
+			</form>        
+		</div>
    </div>   
 </section>
 
@@ -386,8 +371,6 @@
     <p class="copyright muted"><small>&copy; 2017 Giant Eagle Inc.</small></p>
 </div> <!-- /.content-wrapper -->
     </div> <!-- /.page-wrapper -->
-    <footer>
-    </footer>
     <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
     <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
     <script src="/Areas/Account/Assets/js/bootstrap.min-min.js"></script>

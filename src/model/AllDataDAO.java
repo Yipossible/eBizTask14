@@ -23,7 +23,7 @@ public class AllDataDAO  extends GenericDAO<AllDataBean>{
 	public void createDefaultData() throws RollbackException {
 		try {
 			Transaction.begin();
-			String csvFile = "/Users/yiwang/Documents/YiWang/Ebiz/Task 14/customer-databases/all.csv";
+			String csvFile = "/Users/youjia/Desktop/all.csv";
 	        BufferedReader br = null;
 	        String line = "";
 	        String cvsSplitBy = ";";
@@ -52,9 +52,6 @@ public class AllDataDAO  extends GenericDAO<AllDataBean>{
                 alldata.setState(data[16]);
                 super.create(alldata);
             }
-			
-			
-
 			br.close();
 			Transaction.commit();
 		} catch (FileNotFoundException e) {
@@ -65,10 +62,7 @@ public class AllDataDAO  extends GenericDAO<AllDataBean>{
 			e.printStackTrace();
 		} finally {
 			if (Transaction.isActive()) Transaction.rollback();
-		}
-		
-		
-		
+		}	
 	}
 	
 }

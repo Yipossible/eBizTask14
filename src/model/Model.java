@@ -37,22 +37,16 @@ public class Model {
 				throw new ServletException();
 			}
             
-            
             diseaseDAO = new DiseaseDAO("disease_id", pool);
             groceryStoreDAO = new GroceryStoreDAO("grocery_store", pool);
             insuranceCompanyDAO = new InsuranceCompanyDAO("insurance_company", pool);
             insuranceHealthDAO = new InsuranceHealthDAO("insurance_health", pool);
             auditorDAO = new AuditorDAO("auditor", pool);
-
-           
+       
         } catch (DAOException e) {
             throw new ServletException(e);
         }
     }
-    
-
-
-
 
 	public CustomerAcctDAO getCustomerAcctDAO() {
 		return customerAcctDAO;
@@ -107,17 +101,9 @@ public class Model {
 		return auditorDAO;
 	}
 
-
-
-
-
 	public void setAuditorDAO(AuditorDAO auditorDAO) {
 		this.auditorDAO = auditorDAO;
 	}
-
-
-
-
 
 	public void setRequireSSL(boolean requireSSL) {
 		this.requireSSL = requireSSL;

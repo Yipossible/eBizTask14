@@ -9,22 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.genericdao.RollbackException;
 
 import databean.AuditorBean;
 import databean.CustomerMonitorAction;
-import model.AllDataDAO;
 import model.AuditorDAO;
-import model.CustomerAcctDAO;
-import model.DiseaseDAO;
-import model.GroceryStoreDAO;
-import model.InsuranceCompanyDAO;
-import model.InsuranceHealthDAO;
 import model.Model;
-
-
 
 public class Controller extends HttpServlet {
 
@@ -43,17 +34,7 @@ public class Controller extends HttpServlet {
     public void init() throws ServletException {
     
     model = new Model(getServletConfig());
-    	
-    AllDataDAO allDataDAO = model.getAllDataDAO();
-    DiseaseDAO diseaseDAO = model.getDiseaseDAO();
-    GroceryStoreDAO groceryStoreDAO = model.getGroceryStoreDAO();
-    InsuranceCompanyDAO insuranceCompanyDAO = model.getInsuranceCompanyDAO();
-    InsuranceHealthDAO insuranceHealthDAO = model.getInsuranceHealthDAO();
     AuditorDAO auditorDAO = model.getAuditorDAO();
-    CustomerAcctDAO customerAcctDAO = model.getCustomerAcctDAO();
-    
-    
-    
     
     try { 
         if ( model.getAuditorDAO().getAuditor().length == 0){    
@@ -64,24 +45,15 @@ public class Controller extends HttpServlet {
             auditorDAO.create(auditorBean);
         }
     } catch (RollbackException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }
-    
-    
-    
-    
 
         Action.add(new CustomerRegisterAction(model));
         Action.add(new AuditorLoginAction(model));
         Action.add(new AuditorDeIdentifyDataAction(model));
         Action.add(new AuditorReviewAction(model));
         Action.add(new CustomerEnrollAction());
-        Action.add(new CustomerMonitorAction()); 
-//    	Action.add(new GetDirectionAction());
-//    	Action.add(new RouteDetailsAction());
-    	
-    	
+        Action.add(new CustomerMonitorAction());
     }
 
     @Override
@@ -163,7 +135,6 @@ public class Controller extends HttpServlet {
     private void prepareLinks(HttpServletRequest request) {
         Map<String, String> links = new LinkedHashMap<String, String>();
         if (request.getAttribute("auditor") != null) {
-            //links.put("auditorLogin.do", "Auditor Login");
             links.put("auditordeIdentification.do", "Generate Data");
 
         } else if (request.getAttribute("customer") != null) {
@@ -172,7 +143,6 @@ public class Controller extends HttpServlet {
         	links.put("customerRegister.do", "Customer Register");
         	links.put("auditorLogin.do", "Auditor Login");
         }
-
         request.setAttribute("links", links);
     }
 }

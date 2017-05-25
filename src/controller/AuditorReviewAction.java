@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanFactory;
@@ -42,12 +41,7 @@ public class AuditorReviewAction extends Action {
 		List<String> errors = new ArrayList<String>();
         request.setAttribute("errors",errors);
         System.out.println("enter Auditor Review perform action");
-        
-		
-        
-        
-        
-        
+
         try {
 			AuditorSelectDBForm form = formBeanFactory.create(request);
 			
@@ -64,7 +58,6 @@ public class AuditorReviewAction extends Action {
 				request.getSession().setAttribute("code", list.get(4));
 				System.out.println("all data loaded");
 				break;
-
 			default:
 				break;
 			}
@@ -76,7 +69,6 @@ public class AuditorReviewAction extends Action {
 		return "auditorReview.jsp";
 	}
 
-	
 	public String getAgeRange(String s) {
 		int age = 2017 - Integer.valueOf(s.substring(1,5));
 		int a = age / 10; 

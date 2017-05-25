@@ -18,7 +18,6 @@ import model.Model;
 public class CustomerRegisterAction extends Action{
 	private FormBeanFactory<CustomerRegisterForm> formBeanFactory = FormBeanFactory.getInstance(CustomerRegisterForm.class);
 	private CustomerAcctDAO customerAcctDAO;
-	
 	public CustomerRegisterAction(Model model) {
 		customerAcctDAO = model.getCustomerAcctDAO();
 	}
@@ -64,8 +63,6 @@ public class CustomerRegisterAction extends Action{
             errors.add(e.getMessage());
             return "customerRegister.jsp";
         }
-		
-		
 		return "customerEnroll.jsp";
 	}
 	
