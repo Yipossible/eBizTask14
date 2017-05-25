@@ -154,7 +154,7 @@ public class AuditorDeIdentifyDataAction extends Action {
         // export csv file
         FileWriter fileWriter = null;
        
-			fileWriter = new FileWriter("/Users/yiwang/Desktop/NewAllData.csv");
+			fileWriter = new FileWriter("/Users/youjia/Desktop/NewAllData.csv");
 			//Adding the header
     		fileWriter.append(HEADER);
     		//fileWriter.append(COMMA_DELIMITER);

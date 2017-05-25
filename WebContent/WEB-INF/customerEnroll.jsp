@@ -14,7 +14,7 @@
     <script src="website/js/js3.js"></script>   
     <script type="text/javascript" src='https://www.google.com/recaptcha/api.js' async defer></script>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 </head>
 <body class="page-standard page-guest">       
     <div class="page-wrapper">
@@ -39,19 +39,35 @@
 					    Please check the following boxes to give your permission to the usage of your data in our Healthy Choice Program:
 					    </h2>
 				
-						<div>
-							<form action="customerMonitor.do" method="GET">
-								<input type="checkbox" name="personal" value="yes" checked> Personal Information*<br>
-								<input type="checkbox" name="payment" value="yes" checked> Payment Information**<br>
-								<input type="checkbox" name="insurance" value="yes" checked> Insurance Information***<br>
-								<input type="checkbox" name="pharmacy" value="yes" checked> Pharmacy Information****<br>
-							</form>
-						</div>
-						
-						<p style="font-size: 22px; text-align: center;"> </p>
-		                <p style="font-size: 22px; text-align: center;"> </p>
-						
 						<div class="form-group controls">
+							<form action="customerMonitor.do" method="GET">
+								<div class="col-sm-12">
+		                            <input checked="checked" data-val="true" id="PersonalInformation" name="personal" type="checkbox" value="yes" />
+		                            <label for="PersonalInformation">Personal Information*</label>
+		                        </div>
+		                        <div class="col-sm-12">
+		                            <input checked="checked" data-val="true" id="PaymentInformation" name="payment" type="checkbox" value="yes" />
+		                            <label for="PaymentInformation">Payment Information**</label>
+		                        </div>
+		                        <div class="col-sm-12">
+		                            <input checked="checked" data-val="true" id="InsuranceInformation" name="insurance" type="checkbox" value="yes" />
+		                            <label for="InsuranceInformation">Insurance Information***</label>
+		                        </div>
+		                        <div class="col-sm-12">
+		                            <input checked="checked" data-val="true" id="PharmacyInformation" name="pharmacy" type="checkbox" value="yes" />
+		                            <label for="PharmacyInformation">Pharmacy Information****</label>
+		                        </div>
+							</form>
+							<p style="font-size: 22px; text-align: center;"> </p>
+		                	<p style="font-size: 22px; text-align: center;"> </p>
+						</div>
+						<div>
+							<p style="font-size: 22px; text-align: center;"> </p>
+		                	<p style="font-size: 22px; text-align: center;"> </p>
+		                </div>
+						<div class="form-group controls">
+							<p style="font-size: 22px; text-align: center;"> </p>
+		                	<p style="font-size: 22px; text-align: center;"> </p>
 							<form action="customerEnroll.do" method="POST">
 								<input type="submit" name="button" value="Decline Enrollment" class="btn btn-primary btn-full" />
 							</form>
@@ -66,10 +82,10 @@
 				</div>
 			</div>
 		</section>
-		
+		<p class="copyright muted"><small>&copy; 2017 Giant Eagle Inc.</small></p>
 		<script src="/Areas/Account/Assets/scripts/CommonScripts?v=3Z_MTicl0k6OwWqXo0cL0Odz8AeLjSROE_DfVWo38uU1"></script>
 		<script src="/Areas/Account/Assets/scripts/AccountCreateScripts?v=-wmiCyPxP4nmkaA7nIr0X1XB0B9Fob9UtOwEKW8Pn_Q1"></script>
-		<p class="copyright muted"><small>&copy; 2017 Giant Eagle Inc.</small></p>
+		
 	</div>
 </div>
     <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>

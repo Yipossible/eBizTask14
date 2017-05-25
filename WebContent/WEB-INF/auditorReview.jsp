@@ -7,7 +7,6 @@
     <meta name="description" content="" />
     <title>Auditor Dashboard</title>
     <script type="text/javascript" src="website/js/js1.js" data-dtconfig="rid=RID_2418|rpid=-186441229|domain=gianteagle.com|lab=1|reportUrl=dynaTraceMonitor|agentUri=/dtagent_ICAijqx_6000500141012.js"></script><link rel="icon" type="image/x-icon" href="img/favicon.ico" />
-    
     <link href="website/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <script type="text/javascript" src="website/js/js2.js"></script>
@@ -26,20 +25,16 @@
 			    <div class="row">
 					<div class="col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3 m-t-3">
 						<form action = "auditorReview.do" method = "POST">
-							<div class="cd-select icon">
-	                               <label for="Birth_Month" class="sr-only form-control-label">Birth Month:</label>
-	                               <select class="form-control" name="database">
-									<option value=""></option>
+	                            <select class="form-control" data-val="true" name="database">
+									<option value="" disabled selected>Dataset</option>
 									<option value="allData">All Data</option>
 									<option value="Disease">Disease</option>
 									<option value="InsuranceCompany">Insurance Company</option>
 									<option value="GroceryStore">Grocery Store</option>
 								</select>
-							</div>
 							<p style="font-size: 22px; text-align: center;"> </p>
 		                    <input type="submit" name="submit" value="Preview" class="btn btn-primary btn-full" />
 						</form>
-						<p style="font-size: 22px; text-align: center;"> </p>
 						<p style="font-size: 22px; text-align: center;"> </p>
 					</div>
 					<div class="col-lg-9 col-lg-offset-1 col-xl-8 col-xl-offset-2">
@@ -70,6 +65,7 @@
 					 		<td>43,001</td>
 					 	</tr>
 					 </table>
+					 <p style="font-size: 22px; text-align: center;"> </p>
 					</div>
 					<div class= "table">
 					<c:choose>
@@ -205,12 +201,11 @@
 							</table>
 						</c:when>
 						<c:otherwise>
-							<p style="font-size:large; color:red">
-							 No data available.
-							</p>
+							<p style="font-size:large; color:red"> No dataset selected</p>
 						</c:otherwise>
 					</c:choose>
 					</div>
+					<div class="col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3 m-t-3">
 					<c:choose>
 						<c:when test="${!empty code}">
 							<form action="auditordeIdentification.do" method="POST">
@@ -219,13 +214,16 @@
 							</form>
 						</c:when>
 					</c:choose>
+					<p style="font-size: 22px; text-align: center;"> </p>
 						<div>
-							<p>Rows of Data Processed:</p> <p>${dataCount}</p>
-							<p>K-Anonymization min K =</p> <p>${kamin}</p>
-							<p>K-Anonymization max K =</p> <p>${kamax}</p>
+							<p>Rows of Data Processed: ${dataCount}</p>
+							<p>K-Anonymization minimum K: ${kamin}</p>
+							<p>K-Anonymization maximun K: ${kamax}</p>
 						</div>
 					</div>
+					</div>
 		</section>
+		<p class="copyright muted"><small>&copy; 2017 Giant Eagle Inc.</small></p>
     	</div> <!-- /.content-wrapper -->
     </div> <!-- /.page-wrapper -->
     <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
