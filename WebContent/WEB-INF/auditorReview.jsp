@@ -27,6 +27,37 @@
 <button type="submit" class="sumbit-button">Preview</button>
 
  </form> <br>
+ 
+ 
+ <p>Enrollment Statistics</p>
+ <table>
+ 	<tr>
+ 		<td>Data Category</td>
+ 		<td>Total # of Customers</td>
+ 		<td>Total # of Enrollment</td>
+ 	</tr>
+ 	<tr>
+ 		<td>Personal Information</td>
+ 		<td>95,234</td>
+ 		<td>10,001</td>
+ 	</tr>
+ 	 <tr>
+ 		<td>Payment Information</td>
+ 		<td>95,234</td>
+ 		<td>65,001</td>
+ 	</tr>
+ 	 <tr>
+ 		<td>Insurance Information</td>
+ 		<td>95,234</td>
+ 		<td>40,001</td>
+ 	</tr>
+ 	 <tr>
+ 		<td>Pharmacy Information</td>
+ 		<td>95,234</td>
+ 		<td>43,001</td>
+ 	</tr>
+ 
+ </table>
 
 <div class= "table">
 <c:choose>
@@ -193,11 +224,20 @@
 	<c:when test="${!empty code}">
 	
 <form action="auditordeIdentification.do" method="POST">
-<button type="submit" class="sumbit-button">De-Identify and Show Data</button>
+<button type="submit" class="sumbit-button">De-Identify and Download Data</button>
 </form>
 	
 	</c:when>
 </c:choose>
+
+
+	<p>Rows of Data Processed:</p> <p>${dataCount}</p>
+
+
+
+	<p>K-Anonymization min K =</p> <p>${kamin}</p>
+	<p>K-Anonymization max K =</p> <p>${kamax}</p>
+
 
 </body>
 </html>

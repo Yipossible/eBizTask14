@@ -44,6 +44,10 @@ public class AuditorReviewAction extends Action {
         System.out.println("enter Auditor Review perform action");
         
 		
+        
+        
+        
+        
         try {
 			AuditorSelectDBForm form = formBeanFactory.create(request);
 			
@@ -160,11 +164,11 @@ public class AuditorReviewAction extends Action {
 		NEWAllDataViewBean data_after = new NEWAllDataViewBean();
 		data_after.setAd_keywords("XXX");
 		data_after.setAddress("XXX");
-		data_after.setCity(allDataBeans[0].getCity());
+		data_after.setCity("XXX");
 		data_after.setCoupon_code("XXX");
 		data_after.setCredit_card("XXX");
 		data_after.setDob(getAgeRange(allDataBeans[0].getDob()));
-		data_after.setEthnicity(allDataBeans[0].getEthnicity());
+		data_after.setEthnicity("XXX");
 		data_after.setFirstname("XXX");
 		data_after.setGender(allDataBeans[0].getGender());
 		data_after.setGrocery_member_id("XXX");
@@ -174,30 +178,30 @@ public class AuditorReviewAction extends Action {
 		data_after.setPlan_number("XXX");
 		data_after.setSsn("XXX");
 		data_after.setState(allDataBeans[0].getState());
-		data_after.setZip(allDataBeans[0].getZip().substring(0, 2) + "XXX");
+		data_after.setZip("XXXXX");
 		System.out.println("DI data loaded");
 		list.add(data_after);
 		
 		//show code compliance
 		NEWAllDataViewBean code = new NEWAllDataViewBean();
-		code.setAd_keywords("HIPPA §164.501");
-		code.setAddress("HIPPA §164.502");
-		code.setCity("HIPPA §164.503");
-		code.setCoupon_code("HIPPA §164.504");
-		code.setCredit_card("HIPPA §164.516");
-		code.setDob("HIPPA §164.505");
-		code.setEthnicity("HIPPA §164.506");
-		code.setFirstname("HIPPA §164.507");
-		code.setGender("HIPPA §164.508");
-		code.setGrocery_member_id("HIPPA §164.517");
-		code.setId("HIPPA §164.509");
-		code.setInsurance_member_id("HIPPA §164.510");
-		code.setLastname("HIPPA §164.511");
-		code.setPlan_number("HIPPA §164.512");
-		code.setSsn("HIPPA §164.513");
-		code.setState("HIPPA §164.514");
-		code.setZip("HIPPA §164.515");
-		System.out.println("Legal data loaded");
+		code.setAd_keywords("HIPPA $ 164.514 (b)(2)");
+		code.setAddress("HIPPA $ 164.514 (b)(2)");
+		code.setCity("HIPPA $ 164.514 (b)(2)");
+		code.setCoupon_code("HIPPA $ 164.514 (b)(2)");
+		code.setCredit_card("HIPPA $ 164.514 (b)(2)");
+		code.setDob("HIPPA $ 164.514 (b)(2), OECD Safe Harbor");
+		code.setEthnicity("HIPPA $ 164.514 (b)(2)");
+		code.setFirstname("HIPPA $ 164.514 (b)(2)");
+		code.setGender("HIPPA $ 164.514 (b)(2)");
+		code.setGrocery_member_id("HIPPA $ 164.514 (b)(2)");
+		code.setId("HIPPA $ 164.514 (b)(2)");
+		code.setInsurance_member_id("HIPPA $ 164.514 (b)(2)");
+		code.setLastname("HIPPA $ 164.514 (b)(2)");
+		code.setPlan_number("HIPPA $ 164.514 (b)(2)");
+		code.setSsn("HIPPA $ 164.514 (b)(2)");
+		code.setState("HIPPA $ 164.514 (b)(2)");
+		code.setZip("HIPPA $ 164.514 (b)(2), OECD Safe Harbor");
+		System.out.println("HIPPA $ 164.514 (b)(2)");
 		list.add(code);
 		return list;
 	}

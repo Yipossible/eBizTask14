@@ -52,7 +52,7 @@ public class AuditorLoginAction extends Action{
 			
 			session.setAttribute("auditor", auditors[0].getAuditor_username());
 			
-			return "auditordeIdentification.jsp";
+			return "auditorReview.jsp";
 			
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
