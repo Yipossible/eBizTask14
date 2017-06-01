@@ -23,7 +23,7 @@ public class AllDataDAO  extends GenericDAO<AllDataBean>{
 	public void createDefaultData() throws RollbackException {
 		try {
 			Transaction.begin();
-			String csvFile = "/Users/youjia/Desktop/all.csv";
+			String csvFile = "/home/ubuntu/all.csv";
 	        BufferedReader br = null;
 	        String line = "";
 	        String cvsSplitBy = ";";

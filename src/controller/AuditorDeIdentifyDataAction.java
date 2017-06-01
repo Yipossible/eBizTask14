@@ -1,7 +1,9 @@
 package controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,160 +11,150 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
-import com.sun.javafx.collections.MappingChange.Map;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import databean.AllDataBean;
-import model.AllDataDAO;
-import model.Model;
 import viewbean.NEWAllDataViewBean;
 
 public class AuditorDeIdentifyDataAction extends Action {
 	//Delimiters which has to be in the CSV file
 	private static final String COMMA_DELIMITER = ";";
 	private static final String LINE_SEPARATOR = "\n";    
-	    //File header
+	//File header
 	private static final String HEADER = "insurance_member_id;grocery_member_id;plan_number;dob;address;credit_card;ad_keywords;coupon_code;firstname;lastname;gender;ethnicity;ssn;zip;id;city;state";
 	
-	private AllDataDAO allDataDAO;
+	//Initialize Mysql Connection
+	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DB_NAME = "test";
+    private static final String TABLE_NAME = "alldata";
+    private static final String URL = "jdbc:mysql://ec2-184-72-75-223.compute-1.amazonaws.com/" + DB_NAME + "?useSSL=false";
+    private static final String DB_USER = "front";
+    private static final String DB_PWD = "";
+    private static Connection connSQL;
 	
-	public AuditorDeIdentifyDataAction(Model model) {
-		allDataDAO = model.getAllDataDAO();
+	public String getName() {
+	    return "auditordeIdentification.do";
 	}
-	public String getName () {return "auditordeIdentification.do";}
 	
 	public String getAgeRange(String s) {
 		int age = 2017 - Integer.valueOf(s.substring(1,5));
 		int a = age / 10; 
 		int lowerbound = a * 10;
-		int upperbound = (a+1) *10;
+		int upperbound = (a + 1) *10;
 		return "Age[" + lowerbound + "," + upperbound + "]";
 	}
 	
-	public String perform (HttpServletRequest request){
+	private static void initializeConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(JDBC_DRIVER);
+        connSQL = DriverManager.getConnection(URL, DB_USER, DB_PWD);
+    }
+	
+	public String perform (HttpServletRequest request, HttpServletResponse response) {
 		List<String> errors = new ArrayList<String>();
-        request.setAttribute("errors",errors);
-        HttpSession session = request.getSession();
+        request.setAttribute("errors", errors);
         
-        
-        System.out.println("enter perform");
-        try{
-        AllDataBean[] allDataBeans = allDataDAO.match();
-        if (allDataBeans.length == 0 || allDataBeans == null) {
-        	errors.add("All Data information NOT Available.");
-        	return "auditorReview.jsp";
-        }
-        
-        System.out.println("retrieve raw data");
-        List<NEWAllDataViewBean> list = new ArrayList<NEWAllDataViewBean>();
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        System.out.println("created list");
-        for (int i = 0; i < allDataBeans.length; i ++) {
-        	NEWAllDataViewBean viewBean = new NEWAllDataViewBean();
-        	//System.out.println("viewbean generated");
-        	//suppressed
-        	viewBean.setInsurance_member_id("*");
-        	viewBean.setGrocery_member_id("*");
-        	viewBean.setPlan_number("*");
-        	viewBean.setAddress("*");
-        	viewBean.setCredit_card("*");
-        	viewBean.setCoupon_code("*");
-        	viewBean.setFirstname("*");
-        	viewBean.setLastname("*");
-        	viewBean.setSsn("*");
-        	viewBean.setId("*");
-        	viewBean.setCity("*");
-        	//System.out.println("suppression performed");
-        	
-        	//special case;
-        	viewBean.setAd_keywords("*");
-        	
-        	//default
-        	viewBean.setGender(allDataBeans[i].getGender());
-        	viewBean.setState(allDataBeans[i].getState());
-        	viewBean.setEthnicity("XXX");
-        	//System.out.println("default performed");
-        	
-        	//generalizations
-        	viewBean.setZip("XXXX");
-        	//System.out.println("ZIP generalization");
-        	//System.out.println(allDataBeans[i].getDob());
-        	//System.out.println(getAgeRange(allDataBeans[i].getDob()));
-        	viewBean.setDob(getAgeRange(allDataBeans[i].getDob()));
-        	//System.out.println("DOB generalization");
-        	//System.out.println("generalization performed");
-        	
-        	String s;  
-        	StringBuffer sb = new StringBuffer(40); 
-        	sb.append(viewBean.getInsurance_member_id());
-        	sb.append(viewBean.getGrocery_member_id());
-        	sb.append(viewBean.getPlan_number());
-        	sb.append(viewBean.getAddress());
-        	sb.append(viewBean.getCredit_card());
-        	sb.append(viewBean.getCoupon_code());
-        	sb.append(viewBean.getFirstname());
-        	sb.append(viewBean.getLastname());
-        	sb.append(viewBean.getSsn());
-        	sb.append(viewBean.getId());
-        	sb.append(viewBean.getCity());
-        	sb.append(viewBean.getAd_keywords());
-        	sb.append(viewBean.getGender());
-        	sb.append(viewBean.getState());
-        	sb.append(viewBean.getEthnicity());
-        	sb.append(viewBean.getZip());
-        	sb.append(viewBean.getDob());
-        	s = sb.toString();
-        	System.out.println("key:" + s);
-        	if(!map.containsKey(s)) {
-        		map.put(s, 1);
-        	} else {
-        		map.put(s, map.get(s)+1);
-        	}
-        	
-        	list.add(viewBean);
+        try {
+            initializeConnection();
+            List<NEWAllDataViewBean> list = new ArrayList<NEWAllDataViewBean>();
+            HashMap<String, Integer> map = new HashMap<String, Integer>();
+            
+            System.out.println("Connectiong to MySQL...");
+            Statement stmt = null;
+            try {
+                initializeConnection();
+                stmt = connSQL.createStatement();
+                String sql = "SELECT * FROM " + TABLE_NAME;
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    NEWAllDataViewBean viewBean = new NEWAllDataViewBean();
+                    viewBean.setInsurance_member_id("*");
+                    viewBean.setGrocery_member_id("*");
+                    viewBean.setPlan_number("*");
+                    viewBean.setAddress("*");
+                    viewBean.setCredit_card("*");
+                    viewBean.setCoupon_code("*");
+                    viewBean.setFirstname("*");
+                    viewBean.setLastname("*");
+                    viewBean.setSsn("*");
+                    viewBean.setId("*");
+                    viewBean.setCity("*");
+                    viewBean.setAd_keywords("*");
+                    //default
+                    viewBean.setGender(rs.getString(10));
+                    viewBean.setState(rs.getString(16));
+                    viewBean.setEthnicity("XXX");
+                    //generalizations
+                    viewBean.setZip("XXXX");
+                    viewBean.setDob(getAgeRange(rs.getString(7)));
+                    
+                    String s;  
+                    StringBuffer sb = new StringBuffer(40); 
+                    sb.append(viewBean.getInsurance_member_id());
+                    sb.append(viewBean.getGrocery_member_id());
+                    sb.append(viewBean.getPlan_number());
+                    sb.append(viewBean.getAddress());
+                    sb.append(viewBean.getCredit_card());
+                    sb.append(viewBean.getCoupon_code());
+                    sb.append(viewBean.getFirstname());
+                    sb.append(viewBean.getLastname());
+                    sb.append(viewBean.getSsn());
+                    sb.append(viewBean.getId());
+                    sb.append(viewBean.getCity());
+                    sb.append(viewBean.getAd_keywords());
+                    sb.append(viewBean.getGender());
+                    sb.append(viewBean.getState());
+                    sb.append(viewBean.getEthnicity());
+                    sb.append(viewBean.getZip());
+                    sb.append(viewBean.getDob());
+                    s = sb.toString();
+                    if(!map.containsKey(s)) {
+                        map.put(s, 1);
+                    } else {
+                        map.put(s, map.get(s)+1);
+                    }
+                    list.add(viewBean);
+                }
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
-        	System.out.println("new view bean created " + i);
-        }
-        
-        int min = Integer.MAX_VALUE;
-        Set<String> key = map.keySet();
-        for (Object k : key) {
-        	min = Math.min(min, map.get(k));
-        }
-        int max = Integer.MIN_VALUE;
-        for (Object k : key) {
-        	max = Math.max(max, map.get(k));
-        }
-        
-        
-        
-        request.setAttribute("kamin", min);
-        request.setAttribute("kamax", max);
-        request.setAttribute("dataCount", allDataBeans.length);
-     
-        System.out.println("K min =" + min);
-        System.out.println("K max =" + max);
-        System.out.println("rows processed" + allDataBeans.length);
-        
-        
-        System.out.println("list created and added to request");
-
-    
-       
-        
-        // export csv file
-        FileWriter fileWriter = null;
-       
-			fileWriter = new FileWriter("/Users/youjia/Desktop/NewAllData.csv");
+            int min = Integer.MAX_VALUE;
+            Set<String> key = map.keySet();
+            for (Object k : key) {
+            	min = Math.min(min, map.get(k));
+            }
+            int max = Integer.MIN_VALUE;
+            for (Object k : key) {
+            	max = Math.max(max, map.get(k));
+            }
+            request.setAttribute("kamin", min);
+            request.setAttribute("kamax", max);
+            request.setAttribute("dataCount", 10000);
+            
+            // export csv file
+            
+            File result = File.createTempFile("result", ".csv");
+            
+            FileWriter fileWriter = new FileWriter(result);
 			//Adding the header
     		fileWriter.append(HEADER);
-    		//fileWriter.append(COMMA_DELIMITER);
     		fileWriter.append(LINE_SEPARATOR);
     		//Iterate the empList
     		Iterator<NEWAllDataViewBean> datalist = list.iterator();
-    		while(datalist.hasNext())
-    		{
+    		while (datalist.hasNext()) {
     			NEWAllDataViewBean e = (NEWAllDataViewBean)datalist.next();
     			fileWriter.append(e.getInsurance_member_id());
     			fileWriter.append(COMMA_DELIMITER);
@@ -198,22 +190,31 @@ public class AuditorDeIdentifyDataAction extends Action {
     			fileWriter.append(COMMA_DELIMITER);
     			fileWriter.append(e.getState());
     			fileWriter.append(COMMA_DELIMITER);
-
     			fileWriter.append(LINE_SEPARATOR);
     		}
-    		System.out.println("Write to CSV file Succeeded!!!");
-    		
-        	
-        	
-    			fileWriter.flush();
-    			fileWriter.close();
-        } catch(Exception ee)
-    	{
-    		ee.printStackTrace();
-    	}
+    		System.out.println("csv file created");
+    		fileWriter.flush();
+			fileWriter.close();
+			
+			response.setContentType("text/csv");
 
-		
-		
+	        // Make sure to show the download dialog
+	        response.setHeader("Content-disposition","attachment; filename = result.csv");
+	        
+			OutputStream out = response.getOutputStream();
+            FileInputStream in = new FileInputStream(result);
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = in.read(buffer)) > 0){
+                out.write(buffer, 0, length);
+            }
+            in.close();
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            errors.add(e.getMessage());
+            return "auditorReview.jsp";
+    	}
 		return "auditorReview.jsp";
 	}
 }

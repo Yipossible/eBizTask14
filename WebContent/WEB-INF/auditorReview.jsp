@@ -215,11 +215,6 @@
 						</c:when>
 					</c:choose>
 					<p style="font-size: 22px; text-align: center;"> </p>
-						<div>
-							<p>Rows of Data Processed: ${dataCount}</p>
-							<p>K-Anonymization minimum K: ${kamin}</p>
-							<p>K-Anonymization maximun K: ${kamax}</p>
-						</div>
 					</div>
 					</div>
 		</section>

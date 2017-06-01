@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.genericdao.RollbackException;
 
 import databean.AuditorBean;
-import databean.CustomerMonitorAction;
 import model.AuditorDAO;
 import model.Model;
 
@@ -50,8 +49,8 @@ public class Controller extends HttpServlet {
 
         Action.add(new CustomerRegisterAction(model));
         Action.add(new AuditorLoginAction(model));
-        Action.add(new AuditorDeIdentifyDataAction(model));
-        Action.add(new AuditorReviewAction(model));
+        Action.add(new AuditorDeIdentifyDataAction());
+        Action.add(new AuditorReviewAction());
         Action.add(new CustomerEnrollAction());
         Action.add(new CustomerMonitorAction());
     }
@@ -66,7 +65,7 @@ public class Controller extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String nextPage = performTheAction(request);
+            String nextPage = performTheAction(request, response);
             sendToNextPage(nextPage, request, response);
         } catch (Exception e) {
             String error = e.getMessage();
@@ -84,12 +83,12 @@ public class Controller extends HttpServlet {
      *
      * @return the next page (the view)
      */
-    private String performTheAction(HttpServletRequest request) throws ServletException {
+    private String performTheAction(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         String servletPath = request.getServletPath();
         String action = getActionName(servletPath);
         request.setAttribute("activeLink", action);
         System.out.println("perform action: " + action);
-        return Action.perform(action, request);
+        return Action.perform(action, request, response);
     }
 
     /*

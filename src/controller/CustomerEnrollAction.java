@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.mybeans.form.FormBeanFactory;
 
@@ -21,7 +22,7 @@ public class CustomerEnrollAction extends Action {
 	    return "customerEnroll.do";
 	}
 	
-	public String perform (HttpServletRequest request) {
+	public String perform (HttpServletRequest request, HttpServletResponse response) {
 	    
 		List<String> errors = new ArrayList<String>();
         request.setAttribute("errors", errors);

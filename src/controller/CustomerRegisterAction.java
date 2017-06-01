@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.genericdao.DuplicateKeyException;
 import org.genericdao.RollbackException;
@@ -24,7 +25,7 @@ public class CustomerRegisterAction extends Action{
 	
 	public String getName() {return "customerRegister.do";}
 	
-	public String perform(HttpServletRequest request) {
+	public String perform(HttpServletRequest request, HttpServletResponse response) {
 		List<String> errors = new ArrayList<String>();
         request.setAttribute("errors",errors);
         

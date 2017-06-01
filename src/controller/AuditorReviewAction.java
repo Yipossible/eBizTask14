@@ -1,50 +1,49 @@
 package controller;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanFactory;
 
-import databean.AllDataBean;
 import formbean.AuditorSelectDBForm;
-import model.AllDataDAO;
-import model.DiseaseDAO;
-import model.GroceryStoreDAO;
-import model.InsuranceCompanyDAO;
-import model.InsuranceHealthDAO;
-import model.Model;
 import viewbean.NEWAllDataViewBean;
 
 public class AuditorReviewAction extends Action {
-	
-	private AllDataDAO allDataDAO;
-	private DiseaseDAO diseaseDAO;
-	private InsuranceCompanyDAO insuranceCompanyDAO;
-	private InsuranceHealthDAO insuranceHealthDAO;
-	private GroceryStoreDAO groceryStoreDAO;
 	private FormBeanFactory<AuditorSelectDBForm> formBeanFactory = FormBeanFactory.getInstance(AuditorSelectDBForm.class);
+	   //Initialize Mysql Connection
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DB_NAME = "test";
+    private static final String TABLE_NAME = "alldata";
+    private static final String URL = "jdbc:mysql://ec2-184-72-75-223.compute-1.amazonaws.com/" + DB_NAME + "?useSSL=false";
+    private static final String DB_USER = "front";
+    private static final String DB_PWD = "";
+    private static Connection connSQL;
 	
-	public AuditorReviewAction(Model model) {
-		allDataDAO = model.getAllDataDAO();
-		diseaseDAO = model.getDiseaseDAO();
-		insuranceCompanyDAO = model.getInsuranceCompanyDAO();
-		insuranceHealthDAO = model.getInsuranceHealthDAO();
-		groceryStoreDAO = model.getGroceryStoreDAO();
+	public String getName() {
+	    return "auditorReview.do";
 	}
 	
-	public String getName() {return "auditorReview.do";}
+   private static void initializeConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(JDBC_DRIVER);
+        connSQL = DriverManager.getConnection(URL, DB_USER, DB_PWD);
+    }
 	
-	public String perform(HttpServletRequest request) {
+	public String perform(HttpServletRequest request, HttpServletResponse response) {
 		List<String> errors = new ArrayList<String>();
-        request.setAttribute("errors",errors);
+        request.setAttribute("errors", errors);
         System.out.println("enter Auditor Review perform action");
 
         try {
+            initializeConnection();
 			AuditorSelectDBForm form = formBeanFactory.create(request);
-			
 			switch (form.getDatabase()) {
 			case "allData":
 				List<NEWAllDataViewBean> list = ViewAllData();
@@ -65,7 +64,6 @@ public class AuditorReviewAction extends Action {
 			errors.add(e.getMessage());
 			return "auditorReview.jsp";
 		}
-        System.out.println("print page");
 		return "auditorReview.jsp";
 	}
 
@@ -77,7 +75,7 @@ public class AuditorReviewAction extends Action {
 		return "Age[" + lowerbound + "," + upperbound + "]";
 	}
 	
-	public List<NEWAllDataViewBean> ViewAllData() throws RollbackException {
+	public List<NEWAllDataViewBean> ViewAllData() {
 		List<NEWAllDataViewBean> list = new ArrayList<NEWAllDataViewBean>();
 		
 		//get variable name
@@ -121,80 +119,97 @@ public class AuditorReviewAction extends Action {
 		method.setSsn("Suppressed");
 		method.setState("Default");
 		method.setZip("Generalized");
-		System.out.println("method data loaded");
+		System.out.println("Method data loaded");
 		list.add(method);
 		
 		//show data before
 		NEWAllDataViewBean data_before = new NEWAllDataViewBean();
-		
-		AllDataBean[] allDataBeans = allDataDAO.match();
-        if (allDataBeans.length == 0 || allDataBeans == null) {
-        	System.out.println("no data available");
+		Statement stmt = null;
+		try {
+            initializeConnection();
+            stmt = connSQL.createStatement();
+            String sql = "SELECT * FROM " + TABLE_NAME + " LIMIT 2";
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                data_before.setAd_keywords(rs.getString(2));
+                data_before.setAddress(rs.getString(3));
+                data_before.setCity(rs.getString(4));
+                data_before.setCoupon_code(rs.getString(5));
+                data_before.setCredit_card(rs.getString(6));
+                data_before.setDob(rs.getString(7));
+                data_before.setEthnicity(rs.getString(8));
+                data_before.setFirstname(rs.getString(9));
+                data_before.setGender(rs.getString(10));
+                data_before.setGrocery_member_id(rs.getString(1));
+                data_before.setId(rs.getString(11));
+                data_before.setInsurance_member_id(rs.getString(12));
+                data_before.setLastname(rs.getString(13));
+                data_before.setPlan_number(rs.getString(14));
+                data_before.setSsn(rs.getString(15));
+                data_before.setState(rs.getString(16));
+                data_before.setZip(rs.getString(17));
+                System.out.println("raw data loaded");
+                list.add(data_before);
+                
+                //show data after
+                NEWAllDataViewBean data_after = new NEWAllDataViewBean();
+                data_after.setAd_keywords("XXX");
+                data_after.setAddress("XXX");
+                data_after.setCity("XXX");
+                data_after.setCoupon_code("XXX");
+                data_after.setCredit_card("XXX");
+                data_after.setDob(getAgeRange(rs.getString(7)));
+                data_after.setEthnicity("XXX");
+                data_after.setFirstname("XXX");
+                data_after.setGender(rs.getString(10));
+                data_after.setGrocery_member_id("XXX");
+                data_after.setId("XXX");
+                data_after.setInsurance_member_id("XXX");
+                data_after.setLastname("XXX");
+                data_after.setPlan_number("XXX");
+                data_after.setSsn("XXX");
+                data_after.setState(rs.getString(16));
+                data_after.setZip("XXXXX");
+                System.out.println("DI data loaded");
+                list.add(data_after);
+                
+                //show code compliance
+                NEWAllDataViewBean code = new NEWAllDataViewBean();
+                code.setAd_keywords("HIPPA $ 164.514 (b)(2)");
+                code.setAddress("HIPPA $ 164.514 (b)(2)");
+                code.setCity("HIPPA $ 164.514 (b)(2)");
+                code.setCoupon_code("HIPPA $ 164.514 (b)(2)");
+                code.setCredit_card("HIPPA $ 164.514 (b)(2)");
+                code.setDob("HIPPA $ 164.514 (b)(2), OECD Safe Harbor");
+                code.setEthnicity("HIPPA $ 164.514 (b)(2)");
+                code.setFirstname("HIPPA $ 164.514 (b)(2)");
+                code.setGender("HIPPA $ 164.514 (b)(2)");
+                code.setGrocery_member_id("HIPPA $ 164.514 (b)(2)");
+                code.setId("HIPPA $ 164.514 (b)(2)");
+                code.setInsurance_member_id("HIPPA $ 164.514 (b)(2)");
+                code.setLastname("HIPPA $ 164.514 (b)(2)");
+                code.setPlan_number("HIPPA $ 164.514 (b)(2)");
+                code.setSsn("HIPPA $ 164.514 (b)(2)");
+                code.setState("HIPPA $ 164.514 (b)(2)");
+                code.setZip("HIPPA $ 164.514 (b)(2), OECD Safe Harbor");
+                System.out.println("HIPPA $ 164.514 (b)(2)");
+                list.add(code);
+                return list;
+            } else {
+                System.out.println("no data available");
+                return list;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-		
-		data_before.setAd_keywords(allDataBeans[0].getAd_keywords());
-		data_before.setAddress(allDataBeans[0].getAddress());
-		data_before.setCity(allDataBeans[0].getCity());
-		data_before.setCoupon_code(allDataBeans[0].getCoupon_code());
-		data_before.setCredit_card(allDataBeans[0].getCredit_card());
-		data_before.setDob(allDataBeans[0].getDob());
-		data_before.setEthnicity(allDataBeans[0].getEthnicity());
-		data_before.setFirstname(allDataBeans[0].getFirstname());
-		data_before.setGender(allDataBeans[0].getGender());
-		data_before.setGrocery_member_id(allDataBeans[0].getGrocery_member_id());
-		data_before.setId(allDataBeans[0].getId());
-		data_before.setInsurance_member_id(allDataBeans[0].getInsurance_member_id());
-		data_before.setLastname(allDataBeans[0].getLastname());
-		data_before.setPlan_number(allDataBeans[0].getPlan_number());
-		data_before.setSsn(allDataBeans[0].getSsn());
-		data_before.setState(allDataBeans[0].getState());
-		data_before.setZip(allDataBeans[0].getZip());
-		System.out.println("raw data loaded");
-		list.add(data_before);
-		
-		//show data after
-		NEWAllDataViewBean data_after = new NEWAllDataViewBean();
-		data_after.setAd_keywords("XXX");
-		data_after.setAddress("XXX");
-		data_after.setCity("XXX");
-		data_after.setCoupon_code("XXX");
-		data_after.setCredit_card("XXX");
-		data_after.setDob(getAgeRange(allDataBeans[0].getDob()));
-		data_after.setEthnicity("XXX");
-		data_after.setFirstname("XXX");
-		data_after.setGender(allDataBeans[0].getGender());
-		data_after.setGrocery_member_id("XXX");
-		data_after.setId("XXX");
-		data_after.setInsurance_member_id("XXX");
-		data_after.setLastname("XXX");
-		data_after.setPlan_number("XXX");
-		data_after.setSsn("XXX");
-		data_after.setState(allDataBeans[0].getState());
-		data_after.setZip("XXXXX");
-		System.out.println("DI data loaded");
-		list.add(data_after);
-		
-		//show code compliance
-		NEWAllDataViewBean code = new NEWAllDataViewBean();
-		code.setAd_keywords("HIPPA $ 164.514 (b)(2)");
-		code.setAddress("HIPPA $ 164.514 (b)(2)");
-		code.setCity("HIPPA $ 164.514 (b)(2)");
-		code.setCoupon_code("HIPPA $ 164.514 (b)(2)");
-		code.setCredit_card("HIPPA $ 164.514 (b)(2)");
-		code.setDob("HIPPA $ 164.514 (b)(2), OECD Safe Harbor");
-		code.setEthnicity("HIPPA $ 164.514 (b)(2)");
-		code.setFirstname("HIPPA $ 164.514 (b)(2)");
-		code.setGender("HIPPA $ 164.514 (b)(2)");
-		code.setGrocery_member_id("HIPPA $ 164.514 (b)(2)");
-		code.setId("HIPPA $ 164.514 (b)(2)");
-		code.setInsurance_member_id("HIPPA $ 164.514 (b)(2)");
-		code.setLastname("HIPPA $ 164.514 (b)(2)");
-		code.setPlan_number("HIPPA $ 164.514 (b)(2)");
-		code.setSsn("HIPPA $ 164.514 (b)(2)");
-		code.setState("HIPPA $ 164.514 (b)(2)");
-		code.setZip("HIPPA $ 164.514 (b)(2), OECD Safe Harbor");
-		System.out.println("HIPPA $ 164.514 (b)(2)");
-		list.add(code);
 		return list;
 	}
 }
